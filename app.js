@@ -27,7 +27,7 @@ app.use(session(
       secret: 'keyboard cat',
       resave: false,
       saveUninitialized: true,
-      cookie: {maxAge: 60000},
+      cookie: {maxAge: 60000000},
     }),
 );
 
@@ -76,6 +76,7 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/form'}),
 
 app.post('/logout', (req, res) => {
   req.logout();
+  //req.session.destroy();
   res.redirect('/form');
 });
 
