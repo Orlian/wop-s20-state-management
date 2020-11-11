@@ -1,7 +1,7 @@
 'use strict';
 
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const Strategy = require('passport-local').Strategy;
 
 const users = [
   {
@@ -37,25 +37,24 @@ const getUserLogin = (email) => {
 };
 
 //Serialize: store user id in session
-passport.serializeUser((user, done) => {
-  console.log('serialize', user.user_id);
-  done(null, user.user_id);
+passport.serializeUser((id, done) => {
+  console.log('serialize', id);
+  done(null, id);
 });
 
 //deserialize: get user id from session and get all user data too
 passport.deserializeUser(async (id, done) => {
-  const user = await getUser(id);
+  const user = getUser(id);
   console.log('deserialize', user);
   done(null, user);
 });
 
-passport.use(new LocalStrategy((username, password, done) => {
+passport.use(new Strategy((username, password, done) => {
       const user = getUserLogin(username);
       if (user === undefined || user.password !== password) {
         return done(null, false, {message: 'Incorrect password or username'});
-      } else {
-        return done(null, user);
       }
+      return done(null, user.user_id);
     },
 ));
 

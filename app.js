@@ -15,9 +15,6 @@ const loggedIn = (req, res, next) => {
   }
 };
 
-const username = 'foo';
-const password = 'bar';
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -74,7 +71,7 @@ app.post('/login', passport.authenticate('local', {failureRedirect: '/form'}),
       res.redirect('/secret');
     });
 
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.logout();
   //req.session.destroy();
   res.redirect('/form');
